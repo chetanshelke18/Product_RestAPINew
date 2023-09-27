@@ -31,28 +31,32 @@ public class ProductServiceIMPL implements ProductService {
 
 	@Override
 	public Product getProductById(String productId) {
-		return null;
+		
+		return dao.getProductById(productId);
 		
 	}
 
 	@Override
 	public List<Product> getAllProducts() {
-		return null;
+		return dao.getAllProducts();
 		
 	}
 
 	@Override
 	public boolean deleteProductById(String productId) {
-		return false;
+		return dao.deleteProductById(productId);
 		
 	}
 
 	@Override
 	public boolean updateProduct(Product product) {
-		return false;
+		return dao.updateProduct(product);
 		
 	}
-	
+	@Override
+	public List<Product> getMaxPriceProduct() {
+		return dao.getMaxPriceProduct();
+	}
 }
 
 

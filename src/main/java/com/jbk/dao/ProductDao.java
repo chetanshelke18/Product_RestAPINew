@@ -12,5 +12,6 @@ public interface ProductDao {
 	public List<Product> getAllProducts();
 	public boolean deleteProductById(String productId);
 	public boolean updateProduct(Product product);
-	
+	public List<Product> getMaxPriceProduct();
+	double getMaxPrice();
 }

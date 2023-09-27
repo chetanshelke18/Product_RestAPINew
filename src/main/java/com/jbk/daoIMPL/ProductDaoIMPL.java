@@ -8,6 +8,8 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -19,24 +21,24 @@ public class ProductDaoIMPL implements ProductDao{
 
 	@Autowired
 	private SessionFactory sf;
-	
+
 	@Override
 	public boolean saveProduct(Product product) {
 		boolean isSaved=false;
 		Session session =null;
 		try {
-			 session =sf.openSession();
+			session =sf.openSession();
 			Transaction transaction=session.beginTransaction();
 			session.save(product);
 			transaction.commit();
 			isSaved=true;		
-			}
+		}
 		catch (PersistenceException e) {
 			e.printStackTrace();
 
 			isSaved=false;			
 		}
-		
+
 		catch (Exception e) {
 			e.printStackTrace();
 		}finally{
@@ -44,7 +46,7 @@ public class ProductDaoIMPL implements ProductDao{
 				session.close();
 			}
 		}
-		
+
 		return isSaved;
 	}
 
@@ -53,9 +55,9 @@ public class ProductDaoIMPL implements ProductDao{
 		Product product =null;
 		Session session =null;
 		try {
-			 session =sf.openSession();
-		    product = session.get(Product.class, productId);
-		   
+			session =sf.openSession();
+			product = session.get(Product.class, productId);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally{
@@ -73,7 +75,7 @@ public class ProductDaoIMPL implements ProductDao{
 		try {
 			session =sf.openSession();
 			Criteria criteria = session.createCriteria(Product.class);
-			 list=criteria.list();
+			list=criteria.list();
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -90,18 +92,18 @@ public class ProductDaoIMPL implements ProductDao{
 		Session session =null;
 		boolean isDeleted=false;
 		try {
-			 session =sf.openSession();
-			 Transaction transaction=session.beginTransaction();
-			 Product product = getProductById(productId);
-			 if(product!=null) {
-				 session.delete(product);
-				 transaction.commit();
-				 isDeleted=true; 
-			 }
-			 
+			session =sf.openSession();
+			Transaction transaction=session.beginTransaction();
+			Product product = session.get(Product.class, productId);
+			if(product!=null) {
+				session.delete(product);
+				transaction.commit();
+				isDeleted=true; 
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
-	
+
 		}finally{
 			if(session!=null) {
 				session.close();
@@ -116,13 +118,13 @@ public class ProductDaoIMPL implements ProductDao{
 		boolean isUpdated=false;
 		try {
 			session =sf.openSession();
-			 Transaction transaction=session.beginTransaction();
-			 Product dbProduct = getProductById(product.getProductId());
-			 if(dbProduct !=null) {
-			 session.update(product);
-			 transaction.commit();
-			 isUpdated=true;
-			 }
+			Transaction transaction=session.beginTransaction();
+			Product dbProduct = getProductById(product.getProductId());
+			if(dbProduct !=null) {
+				session.update(product);
+				transaction.commit();
+				isUpdated=true;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -133,6 +135,54 @@ public class ProductDaoIMPL implements ProductDao{
 		}
 		return isUpdated;
 	}
-
 	
+	@Override
+	public List<Product> getMaxPriceProduct(){
+		Session session =null;
+		List<Product> list=null;
+		try {
+			double maxPrice=getMaxPrice();
+			if(maxPrice>0) {
+				session =sf.openSession();
+				Criteria criteria=session.createCriteria(Product.class);
+				criteria.add(Restrictions.eq("productPrice", maxPrice));
+				list=criteria.list();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(session!=null) 
+				session.close();
+			}
+			return list;
+		}
+	
+	@Override
+	public double getMaxPrice(){
+		Session session =null;
+		List<Double> list=null;
+		double maxPrice=0;
+		try {
+			session =sf.openSession();
+			Criteria criteria=session.createCriteria(Product.class);
+			criteria.setProjection(Projections.max("productPrice"));
+			list=criteria.list();
+			if(!(list.isEmpty())) 
+				maxPrice=list.get(0);	
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}finally {
+			if(session!=null) 
+				session.close();
+			}
+		return maxPrice;
+		}
+
 }
+
+
+
+
