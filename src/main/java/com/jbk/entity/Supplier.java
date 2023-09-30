@@ -7,29 +7,31 @@ import javax.persistence.Id;
 @Entity
 public class Supplier {
 	@Id
-	@Column(unique=true,nullable=false)
-	private String supplierId;
-
-	@Column(unique=true,nullable=false)
+	@Column(unique = true, nullable = false)
+	private int supplierId;
+	
+	@Column(unique = true,nullable = false)
 	private String supplierName;
-
-	@Column(nullable=false)
+	
+	@Column(nullable = false)
 	private String city;
-
-	@Column(nullable=false)
+	
+	@Column(nullable = false)
 	private int postalCode;
-
-	@Column(nullable=false)
+	
+	@Column(nullable = false)
 	private String country;
-
-	@Column(unique=true,nullable=false)
-	private int mobile;
-
+	
+	@Column(unique = true,nullable = false)
+	private String mobile;
+	
+	
 	public Supplier() {
-
+		// TODO Auto-generated constructor stub
 	}
 
-	public Supplier(String supplierId, String supplierName, String city, int postalCode, String country, int mobile) {
+
+	public Supplier(int supplierId, String supplierName, String city, int postalCode, String country, String mobile) {
 		super();
 		this.supplierId = supplierId;
 		this.supplierName = supplierName;
@@ -39,59 +41,72 @@ public class Supplier {
 		this.mobile = mobile;
 	}
 
-	public String getSupplierId() {
+
+	public int getSupplierId() {
 		return supplierId;
 	}
 
-	public void setSupplierId(String supplierId) {
+
+	public void setSupplierId(int supplierId) {
 		this.supplierId = supplierId;
 	}
+
 
 	public String getSupplierName() {
 		return supplierName;
 	}
 
+
 	public void setSupplierName(String supplierName) {
 		this.supplierName = supplierName;
 	}
+
 
 	public String getCity() {
 		return city;
 	}
 
+
 	public void setCity(String city) {
 		this.city = city;
 	}
+
 
 	public int getPostalCode() {
 		return postalCode;
 	}
 
+
 	public void setPostalCode(int postalCode) {
 		this.postalCode = postalCode;
 	}
+
 
 	public String getCountry() {
 		return country;
 	}
 
+
 	public void setCountry(String country) {
 		this.country = country;
 	}
 
-	public int getMobile() {
+
+	public String getMobile() {
 		return mobile;
 	}
 
-	public void setMobile(int mobile) {
+
+	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
+
 
 	@Override
 	public String toString() {
 		return "Supplier [supplierId=" + supplierId + ", supplierName=" + supplierName + ", city=" + city
 				+ ", postalCode=" + postalCode + ", country=" + country + ", mobile=" + mobile + "]";
 	}
-
+	
 	
 }
