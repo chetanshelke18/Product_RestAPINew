@@ -82,8 +82,8 @@ public class ProductController {
 	}
 
 	@GetMapping("/get-maxprice-Products")
-	public ResponseEntity<List<Product>> getMaxPriceProduct(){
-		List<Product> list = service.getMaxPriceProduct();
+	public ResponseEntity<List<Product>> getMaxPriceProducts(){
+		List<Product> list = service.getMaxPriceProducts();
 		if(!list.isEmpty()) 
 			return new ResponseEntity<List<Product>>(list, HttpStatus.OK);
 		else 

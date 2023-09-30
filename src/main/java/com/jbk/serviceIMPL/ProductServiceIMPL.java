@@ -54,8 +54,8 @@ public class ProductServiceIMPL implements ProductService {
 		
 	}
 	@Override
-	public List<Product> getMaxPriceProduct() {
-		return dao.getMaxPriceProduct();
+	public List<Product> getMaxPriceProducts() {
+		return dao.getMaxPriceProducts();
 	}
 
 	@Override
@@ -82,6 +82,8 @@ public class ProductServiceIMPL implements ProductService {
 	public int getTotalCountOfProducts() {
 		return dao.getTotalCountsOfProducts();
 	}
+
+	
 }
 
 
