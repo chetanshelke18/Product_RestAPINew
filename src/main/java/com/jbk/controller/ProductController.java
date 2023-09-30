@@ -80,8 +80,8 @@ public class ProductController {
 
 		}
 	}
-	
-	@GetMapping("/get-max-priceProduct")
+
+	@GetMapping("/get-maxprice-Products")
 	public ResponseEntity<List<Product>> getMaxPriceProduct(){
 		List<Product> list = service.getMaxPriceProduct();
 		if(!list.isEmpty()) 
@@ -89,6 +89,53 @@ public class ProductController {
 		else 
 			return new ResponseEntity<List<Product>>(list, HttpStatus.NO_CONTENT);
 
-		}
-}
+	}
+	@GetMapping("/sortbyid-asc")
+	public ResponseEntity<List<Product>> sortProductsById_ASC(){
+		List<Product> products = service.sortProductsById_ASC();
+		if(products.isEmpty()) {
+			return new ResponseEntity<List<Product>>(products, HttpStatus.NO_CONTENT);
+		}else {
+			return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 
+		}
+	}
+	@GetMapping("/sortbyname-desc")
+	public ResponseEntity<List<Product>> sortProductsByName_DESC(){
+		List<Product> products = service.sortProductsByName_DESC();
+		if(products.isEmpty()) {
+			return new ResponseEntity<List<Product>>(products, HttpStatus.NO_CONTENT);
+		}else {
+			return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
+
+		}
+	}
+
+	@GetMapping("/get-maxprice")
+	public ResponseEntity<Double> getMaxPrice(){
+		double maxPrice = service.getMaxPrice();
+		if(maxPrice>0) {
+			return new ResponseEntity<Double>(maxPrice, HttpStatus.OK);
+		}else {
+			return new ResponseEntity<Double>(maxPrice, HttpStatus.NO_CONTENT);
+		}
+	}
+	@GetMapping("/count-sumof-product-price")
+	public ResponseEntity<Double> countSumOfProductsPrice(){
+		double sumOfPrice = service.countSumOfProductsPrice();
+		if(sumOfPrice>0) {
+			return new ResponseEntity<Double>(sumOfPrice, HttpStatus.OK);
+		}else {
+			return new ResponseEntity<Double>(sumOfPrice, HttpStatus.NO_CONTENT);
+		}
+	}
+	@GetMapping("/get-total-products-count")
+	public ResponseEntity<Integer> getTotalCountOfProducts(){
+		int totalProductsCount = service.getTotalCountOfProducts();
+		if(totalProductsCount>0) {
+			return new ResponseEntity<Integer>(totalProductsCount, HttpStatus.OK);
+		}else {
+			return new ResponseEntity<Integer>(totalProductsCount, HttpStatus.NO_CONTENT);
+		}
+	}
+}
