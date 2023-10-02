@@ -12,7 +12,7 @@ public interface ProductDao {
 	public List<Product> getAllProducts();
 	public boolean deleteProductById(String productId);
 	public boolean updateProduct(Product product);
-	public List<Product> getMaxPriceProduct();
+	public List<Product> getMaxPriceProducts();
 	public double getMaxPrice();
 	public List<Product> sortProductsById_ASC();
 	public List<Product> sortProductsByName_DESC();

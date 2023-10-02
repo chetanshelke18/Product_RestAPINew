@@ -138,7 +138,7 @@ public class ProductDaoIMPL implements ProductDao{
 	}
 	
 	@Override
-	public List<Product> getMaxPriceProduct(){
+	public List<Product> getMaxPriceProducts(){
 		Session session =null;
 		List<Product> list=null;
 		try {
