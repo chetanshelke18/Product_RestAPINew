@@ -8,6 +8,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -180,8 +181,97 @@ public class ProductDaoIMPL implements ProductDao{
 			}
 		return maxPrice;
 		}
+	
+	@Override
+	public List<Product> sortProductsById_ASC(){
+		Session session =null;
+		List<Product> list=null;
+		try {
+			session =sf.openSession();
+			Criteria criteria=session.createCriteria(Product.class);
+			criteria.addOrder(Order.asc("productId"));
+			list=criteria.list();	
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 
-}
+		}finally {
+			if(session!=null) 
+				session.close();
+			}
+		return list;
+		}
+	
+	@Override
+	public List<Product> sortProductsByName_DESC(){
+		Session session =null;
+		List<Product> list=null;
+		try {
+			session =sf.openSession();
+			Criteria criteria=session.createCriteria(Product.class);
+			criteria.addOrder(Order.desc("productName"));
+			list=criteria.list();	
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}finally {
+			if(session!=null) 
+				session.close();
+			}
+		return list;
+		}
+	
+	@Override
+	public double countSumOfProductPrice() {
+		Session session =null;
+		List<Double> list=null;
+		double sumOfPrice=0;
+		try {
+			session =sf.openSession();
+			Criteria criteria=session.createCriteria(Product.class);
+			criteria.setProjection(Projections.sum("productPrice"));
+			list=criteria.list();	
+			if(!list.isEmpty()) {
+				sumOfPrice=list.get(0);
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}finally {
+			if(session!=null) 
+				session.close();
+			}
+		return sumOfPrice;
+	}
+	@Override
+	public int getTotalCountsOfProducts() {
+		Session session =null;
+		List<Integer> list=null;
+		int  totalproducts=0;
+		try {
+			session =sf.openSession();
+			Criteria criteria=session.createCriteria(Product.class);
+			criteria.setProjection(Projections.rowCount());
+			list=criteria.list();	
+			if(!list.isEmpty()) {
+				totalproducts=list.get(0);
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}finally {
+			if(session!=null) 
+				session.close();
+			}
+		return totalproducts;
+	}
+	}
+
 
 
 

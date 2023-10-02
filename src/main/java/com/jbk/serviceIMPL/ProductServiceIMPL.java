@@ -57,6 +57,31 @@ public class ProductServiceIMPL implements ProductService {
 	public List<Product> getMaxPriceProduct() {
 		return dao.getMaxPriceProduct();
 	}
+
+	@Override
+	public List<Product> sortProductsById_ASC() {
+		return dao.sortProductsById_ASC();
+	}
+
+	@Override
+	public List<Product> sortProductsByName_DESC() {
+		return dao.sortProductsByName_DESC();
+	}
+
+	@Override
+	public double getMaxPrice() {
+		return dao.getMaxPrice();
+	}
+
+	@Override
+	public double countSumOfProductsPrice() {
+		return dao.countSumOfProductPrice();
+	}
+
+	@Override
+	public int getTotalCountOfProducts() {
+		return dao.getTotalCountsOfProducts();
+	}
 }
 
 
