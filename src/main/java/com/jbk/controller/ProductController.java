@@ -2,6 +2,8 @@ package com.jbk.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.jbk.entity.Product;
+import com.jbk.exception.ResourceAlreadyExistsException;
 import com.jbk.service.ProductService;
 
 @RestController
@@ -26,13 +30,13 @@ public class ProductController {
 	ProductService service;
 
 	@PostMapping("/save-product")
-	public ResponseEntity<Boolean> saveProduct(@RequestBody Product product){
+	public ResponseEntity<Boolean> saveProduct(@Valid @RequestBody Product product){
 		boolean isSaved=service.saveProduct(product);
 		if(isSaved) {
 			return new ResponseEntity<Boolean>(isSaved, HttpStatus.CREATED);
 		}else {
-			//throw custom exception(ResourceAlreadyExistsException(String msg) )
-			return new ResponseEntity<Boolean>(isSaved, HttpStatus.ALREADY_REPORTED);
+			throw new ResourceAlreadyExistsException("Resource Already Exists");
+			//return new ResponseEntity<Boolean>(isSaved, HttpStatus.ALREADY_REPORTED);
 
 		}
 	}
@@ -138,4 +142,10 @@ public class ProductController {
 			return new ResponseEntity<Integer>(totalProductsCount, HttpStatus.NO_CONTENT);
 		}
 	}
+	@PostMapping("/import-sheet")
+	public ResponseEntity<String>importSheet(@RequestParam MultipartFile myFile){
+		String msg = service.upploadSheet(myFile);
+		return ResponseEntity.ok(msg);
+	}
+	
 }
