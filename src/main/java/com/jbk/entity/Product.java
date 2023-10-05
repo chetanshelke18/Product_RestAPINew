@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table
@@ -13,6 +16,8 @@ public class Product {
 	@Id
 	@Column(unique=true,nullable=false)
 	private String productId;
+	
+	@NotEmpty(message= "Product Name Is Required")
 	@Column(unique=true,nullable=false)
 	private String productName;
 	
@@ -23,9 +28,11 @@ public class Product {
 	private Category category;
 	
 	@Column(nullable=false)
+	@Min(1)
 	private int productQty;
 
 	@Column(nullable=false)
+	@Min(1)
 	private double productPrice;
 
 	public Product(){

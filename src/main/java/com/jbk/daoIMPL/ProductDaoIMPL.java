@@ -35,8 +35,6 @@ public class ProductDaoIMPL implements ProductDao{
 			isSaved=true;		
 		}
 		catch (PersistenceException e) {
-			e.printStackTrace();
-
 			isSaved=false;			
 		}
 
@@ -136,7 +134,7 @@ public class ProductDaoIMPL implements ProductDao{
 		}
 		return isUpdated;
 	}
-	
+
 	@Override
 	public List<Product> getMaxPriceProducts(){
 		Session session =null;
@@ -149,16 +147,16 @@ public class ProductDaoIMPL implements ProductDao{
 				criteria.add(Restrictions.eq("productPrice", maxPrice));
 				list=criteria.list();
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			if(session!=null) 
 				session.close();
-			}
-			return list;
 		}
-	
+		return list;
+	}
+
 	@Override
 	public double getMaxPrice(){
 		Session session =null;
@@ -171,17 +169,17 @@ public class ProductDaoIMPL implements ProductDao{
 			list=criteria.list();
 			if(!(list.isEmpty())) 
 				maxPrice=list.get(0);	
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 
 		}finally {
 			if(session!=null) 
 				session.close();
-			}
-		return maxPrice;
 		}
-	
+		return maxPrice;
+	}
+
 	@Override
 	public List<Product> sortProductsById_ASC(){
 		Session session =null;
@@ -191,17 +189,17 @@ public class ProductDaoIMPL implements ProductDao{
 			Criteria criteria=session.createCriteria(Product.class);
 			criteria.addOrder(Order.asc("productId"));
 			list=criteria.list();	
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 
 		}finally {
 			if(session!=null) 
 				session.close();
-			}
-		return list;
 		}
-	
+		return list;
+	}
+
 	@Override
 	public List<Product> sortProductsByName_DESC(){
 		Session session =null;
@@ -211,17 +209,17 @@ public class ProductDaoIMPL implements ProductDao{
 			Criteria criteria=session.createCriteria(Product.class);
 			criteria.addOrder(Order.desc("productName"));
 			list=criteria.list();	
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 
 		}finally {
 			if(session!=null) 
 				session.close();
-			}
-		return list;
 		}
-	
+		return list;
+	}
+
 	@Override
 	public double countSumOfProductPrice() {
 		Session session =null;
@@ -234,16 +232,16 @@ public class ProductDaoIMPL implements ProductDao{
 			list=criteria.list();	
 			if(!list.isEmpty()) {
 				sumOfPrice=list.get(0);
-				
+
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 
 		}finally {
 			if(session!=null) 
 				session.close();
-			}
+		}
 		return sumOfPrice;
 	}
 	@Override
@@ -258,21 +256,43 @@ public class ProductDaoIMPL implements ProductDao{
 			list=criteria.list();	
 			if(!list.isEmpty()) {
 				totalproducts=list.get(0);
-				
+
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 
 		}finally {
 			if(session!=null) 
 				session.close();
-			}
+		}
 		return totalproducts;
 	}
+
+	@Override
+	public String uploadProducts(List<Product> list) {
+		Session session =null;
+		int addedCount=0;
+		int excludedCount=0;
+		for (Product product : list) {
+			session =sf.openSession();
+			try {
+				session.save(product);
+				session.beginTransaction().commit();
+				addedCount=addedCount+1;
+			}catch (PersistenceException e) {
+				excludedCount=excludedCount+1;
+				System.out.println("Duplicate");		
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				if(session!=null) { 
+					session.close();
+				}
+			}
+		}
+		return "Added= "+ addedCount +"Excluded= " + excludedCount;
 	}
-
-
-
-
+}
 
